@@ -4,6 +4,7 @@ namespace Fbeen\CroppicBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Fbeen\CroppicBundle\Entity\Image;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TwigExtension extends \Twig_Extension
 {

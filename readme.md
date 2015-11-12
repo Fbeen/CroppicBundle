@@ -32,6 +32,14 @@ Using composer:
         );
 ```
 
+4) Add Routes to app/config/routing.yml
+```
+
+    fbeen_croppic:
+        resource: "@FbeenCroppicBundle/Resources/config/routing.yml"
+        prefix:   /
+```
+
 ## How to use
 
 todo
