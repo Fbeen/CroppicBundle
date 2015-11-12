@@ -1,0 +1,9 @@
+{
+    "name" : "fbeen/croppicbundle",
+    "autoload" : {
+        "psr-0" : {
+            "Fbeen\\CroppicBundle" : ""
+        }
+    },
+    "target-dir" : "Fbeen/CroppicBundle"
+}

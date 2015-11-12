@@ -1,0 +1,9 @@
+{
+    "name" : "fbeen/uniqueslugbundle",
+    "autoload" : {
+        "psr-0" : {
+            "Fbeen\\UniqueSlugBundle" : ""
+        }
+    },
+    "target-dir" : "Fbeen/UniqueSlugBundle"
+}
