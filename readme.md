@@ -34,11 +34,34 @@ Using composer:
 
 4) Add Routes to app/config/routing.yml
 ```
-
     fbeen_croppic:
         resource: "@FbeenCroppicBundle/Resources/config/routing.yml"
         prefix:   /
 ```
+
+5) Update the database 
+```
+    php app/console doctrine:schema:update --force
+```
+
+6) Add configuration to app/config/config.yml 
+```
+    fbeen_croppic:
+        upload:
+            filepath: "%kernel.root_dir%/../web"
+            original: "/uploads/original"
+            cropped: "/uploads/cropped"
+```
+
+7) Create directories
+```
+    cd web
+    mkdir uploads
+    cd uploads
+    mkdir original
+    mkdir cropped
+```
+
 
 ## How to use
 
