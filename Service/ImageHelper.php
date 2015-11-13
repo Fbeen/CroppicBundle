@@ -33,10 +33,12 @@ class ImageHelper
         // move takes the target directory and then the
         // target filename to move to
         $image->getImg()->move(
-            $uploadDir,
-            $filename
+           $uploadDir,
+           $filename
         );
-        
+
+        @mkdir($this->container->getParameter('fbeen_croppic.upload.filepath') . $this->container->getParameter('fbeen_croppic.upload.cropped'), 0777, TRUE);
+    
         $image->setFilename($filename);
         $image->setOriginalname($image->getImg()->getClientOriginalName());
     }
