@@ -63,7 +63,9 @@ Using composer:
 ```
 
 
-## How to use
+## Todo
 
-todo
+* how to use
+* from url back to basename
+* storage in a entity
 

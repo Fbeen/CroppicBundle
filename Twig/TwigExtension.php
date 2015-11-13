@@ -22,7 +22,7 @@ class TwigExtension extends \Twig_Extension
         );
     }
 
-    public function initCroppic($elementId, $imageId = NULL, $events = array())
+    public function initCroppic($elementId, $filename = NULL, $events = array())
     {
         $uploadUrl = $this->container->get('router')->generate('fbeen_croppic_save');
         $cropUrl = $this->container->get('router')->generate('fbeen_croppic_crop');
@@ -40,15 +40,9 @@ class TwigExtension extends \Twig_Extension
             'loaderHtml:\'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> \'',
         );
         
-        if($imageId)
+        if($filename)
         {
-            $image = $this->container->get('doctrine.orm.entity_manager')->getRepository('FbeenCroppicBundle:Image')->find($imageId);
-
-            if (!$image) {
-                throw $this->createNotFoundException('Unable to find Image.');
-            }
-
-            $rules[] = 'loadPicture:"' . $helper->getUrl($image->getFilename(), 'original') . '"';
+            $rules[] = 'loadPicture:"' . $helper->getUrl($filename, 'original') . '"';
         }
         
         foreach($events as $event => $value)
