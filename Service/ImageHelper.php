@@ -55,24 +55,49 @@ class ImageHelper
         
         return $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->container->getParameter('fbeen_croppic.upload.' . $subdir) . '/' . $filename;
     }
+
+
+    public function resolveFilePath($imgUrl)
+    {
+        $uploadDir = $this->container->getParameter('fbeen_croppic.upload.original');
+
+        list($base, $file) = explode($uploadDir, $imgUrl);
+
+        $rootDir = $this->container->get('kernel')->getRootDir() . '/../web';
+
+        return $rootDir . $uploadDir . $file;
+    }
     
     public function crop(Crop $crop)
     {
-        $what = getimagesize($crop->getImgUrl());
+        // Bug fix
+        $imgUrl = $crop->getImgUrl();
+        $filepath = $this->resolveFilePath($imgUrl);
+
+        $what = getimagesize($filepath);
 
         switch(strtolower($what['mime']))
         {
             case 'image/png':
-                $img_r = imagecreatefrompng($crop->getImgUrl());
-                $source_image = imagecreatefrompng($crop->getImgUrl());
+                /*$img_r = imagecreatefrompng($crop->getImgUrl());
+                $source_image = imagecreatefrompng($crop->getImgUrl());*/
+                
+                $img_r = imagecreatefrompng($filepath);
+                $source_image = imagecreatefrompng($filepath);
                 break;
             case 'image/jpeg':
-                $img_r = imagecreatefromjpeg($crop->getImgUrl());
-                $source_image = imagecreatefromjpeg($crop->getImgUrl());
+                /*$img_r = imagecreatefromjpeg($crop->getImgUrl());
+                $source_image = imagecreatefromjpeg($crop->getImgUrl());*/
+
+                $img_r = imagecreatefromjpeg($filepath);
+                $source_image = imagecreatefromjpeg($filepath);
                 break;
             case 'image/gif':
-                $img_r = imagecreatefromgif($crop->getImgUrl());
-                $source_image = imagecreatefromgif($crop->getImgUrl());
+                /*$img_r = imagecreatefromgif($crop->getImgUrl());
+                $source_image = imagecreatefromgif($crop->getImgUrl());*/
+
+                $img_r = imagecreatefromgif($filepath);
+                $source_image = imagecreatefromgif($filepath);
                 break;
             default:
                 return FALSE;
