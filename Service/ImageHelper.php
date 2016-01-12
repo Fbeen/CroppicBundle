@@ -75,6 +75,10 @@ class ImageHelper
         return $filepath . $original .$baseFilepath;
     }
 
+    /**
+     * @param Crop $crop
+     * @return bool
+     */
     public function crop(Crop $crop)
     {
         $filepath = $this->resolveFilepath($crop->getImgUrl());
