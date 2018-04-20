@@ -37,7 +37,8 @@ class TwigExtension extends \Twig_Extension
             'uploadData:{"crsf_token":"' . $token . '"}',
             'outputUrlId:"appbundle_band_image"',
             'rotateFactor:90',
-            'loaderHtml:\'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> \'',
+            'onReset:function(){ console.log("onReset")}',
+//            'loaderHtml:\'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> \'',
         );
         
         if($filename)
@@ -51,7 +52,8 @@ class TwigExtension extends \Twig_Extension
         }
         
         return '<script>
-            var croppic = new Croppic("' . $elementId . '", {' . implode(',', $rules) . '});
+            var croppicOptions = {' . implode(',', $rules) . '};
+            var croppic = new Croppic("' . $elementId . '", cropppicOptions);
             </script>';
     }
 

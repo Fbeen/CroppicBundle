@@ -80,7 +80,7 @@ class CroppicController extends Controller
     {
         $crop = new Crop();
         
-        $form = $this->createForm(new CropType(), $crop);
+        $form = $this->createForm(CropType::class, $crop);
         
         $form->handleRequest($request);
 

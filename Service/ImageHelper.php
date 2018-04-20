@@ -51,7 +51,7 @@ class ImageHelper
     
     public function getUrl($filename, $subdir)
     {
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         
         return $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->container->getParameter('fbeen_croppic.upload.' . $subdir) . '/' . $filename;
     }
