@@ -53,7 +53,7 @@ class TwigExtension extends \Twig_Extension
         
         return '<script>
             var croppicOptions = {' . implode(',', $rules) . '};
-            var croppic = new Croppic("' . $elementId . '", cropppicOptions);
+            var croppic = new Croppic("' . $elementId . '", croppicOptions);
             </script>';
     }
 
