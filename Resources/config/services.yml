@@ -1,11 +1,11 @@
 services:
     fbeen.imagehelper:
         class:     Fbeen\CroppicBundle\Service\ImageHelper
-        arguments: [@service_container]
+        arguments: ['@service_container']
         
     fbeen.croppic.twig_extension:
         class: Fbeen\CroppicBundle\Twig\TwigExtension
         public: false
-        arguments: [@service_container]
+        arguments: ['@service_container']
         tags:
             - { name: twig.extension }
