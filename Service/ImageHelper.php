@@ -55,24 +55,49 @@ class ImageHelper
         
         return $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->container->getParameter('fbeen_croppic.upload.' . $subdir) . '/' . $filename;
     }
-    
+
+    /**
+     * @param $imgUrl
+     * @return string
+     */
+    public function resolveFilepath($imgUrl)
+    {
+        $filepath = $this->container->getParameter('fbeen_croppic.upload.filepath');
+        $original = $this->container->getParameter('fbeen_croppic.upload.original');
+
+        $firstToken = strpos($imgUrl, $original);
+
+        if(false == $firstToken)
+            return $imgUrl;
+
+        $baseFilepath = substr($imgUrl, $firstToken+strlen($original));
+
+        return $filepath . $original .$baseFilepath;
+    }
+
+    /**
+     * @param Crop $crop
+     * @return bool
+     */
     public function crop(Crop $crop)
     {
-        $what = getimagesize($crop->getImgUrl());
+        $filepath = $this->resolveFilepath($crop->getImgUrl());
+
+        $what = getimagesize($filepath);
 
         switch(strtolower($what['mime']))
         {
             case 'image/png':
-                $img_r = imagecreatefrompng($crop->getImgUrl());
-                $source_image = imagecreatefrompng($crop->getImgUrl());
+                $img_r = imagecreatefrompng($filepath);
+                $source_image = imagecreatefrompng($filepath);
                 break;
             case 'image/jpeg':
-                $img_r = imagecreatefromjpeg($crop->getImgUrl());
-                $source_image = imagecreatefromjpeg($crop->getImgUrl());
+                $img_r = imagecreatefromjpeg($filepath);
+                $source_image = imagecreatefromjpeg($filepath);
                 break;
             case 'image/gif':
-                $img_r = imagecreatefromgif($crop->getImgUrl());
-                $source_image = imagecreatefromgif($crop->getImgUrl());
+                $img_r = imagecreatefromgif($filepath);
+                $source_image = imagecreatefromgif($filepath);
                 break;
             default:
                 return FALSE;
@@ -81,28 +106,28 @@ class ImageHelper
         // resize the original image to size of editor
         $resizedImage = imagecreatetruecolor($crop->getImgW(), $crop->getImgH());
         imagecopyresampled($resizedImage, $source_image, 0, 0, 0, 0, $crop->getImgW(), $crop->getImgH(), $crop->getImgInitW(), $crop->getImgInitH());
-            
+
         // rotate the rezized image
         $rotated_image = imagerotate($resizedImage, -$crop->getRotation(), 0);
-        
+
         // find new width & height of rotated image
         $rotated_width = imagesx($rotated_image);
         $rotated_height = imagesy($rotated_image);
-        
+
         // diff between rotated & original sizes
         $dx = $rotated_width - $crop->getImgW();
         $dy = $rotated_height - $crop->getImgH();
-        
+
         // crop rotated image to fit into original rezized rectangle
         $cropped_rotated_image = imagecreatetruecolor($crop->getImgW(), $crop->getImgH());
         imagecolortransparent($cropped_rotated_image, imagecolorallocate($cropped_rotated_image, 0, 0, 0));
         imagecopyresampled($cropped_rotated_image, $rotated_image, 0, 0, $dx / 2, $dy / 2, $crop->getImgW(), $crop->getImgH(), $crop->getImgW(), $crop->getImgH());
-        
+
         // crop image into selected area
         $final_image = imagecreatetruecolor($crop->getCropW(), $crop->getCropH());
         imagecolortransparent($final_image, imagecolorallocate($final_image, 0, 0, 0));
         imagecopyresampled($final_image, $cropped_rotated_image, 0, 0, $crop->getImgX1(), $crop->getImgY1(), $crop->getCropW(), $crop->getCropH(), $crop->getCropW(), $crop->getCropH());
-        
+
         // finally output png image
         imagejpeg($final_image, $this->getPath(basename($crop->getImgUrl()), 'cropped'), 100);
     }
